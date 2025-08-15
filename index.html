@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>High Yield Investment & HYIP ROI Calculator for Small Capital Plans</title>
+<meta name="description" content="Free HYIP ROI Calculator for high yield investment programs. Calculate daily, weekly, monthly returns for small capital plans with profit-only or principal-included payouts." />
+
+<!-- Primary Styles -->
+<style>
+  :root{
+    --brand-green-1:#e6f7ec; --brand-green-2:#d0f0da; --brand-green-3:#28a745;
+    --ink:#1a4d2e; --ink-2:#2b2b2b; --muted:#6b6b6b;
+    --blue:#007bff; --blue-hover:#0069d9; --blue-active:#0056b3;
+    --card:#ffffff; --soft:#f9f9f9;
+  }
+  html,body{margin:0;padding:0;background:#f2f2f2;font-family:Arial,Helvetica,sans-serif;color:var(--ink-2)}
+  h1,h2{color:var(--ink)}
+  .lead{max-width:1000px;margin:0 auto;padding:10px 16px;line-height:1.55}
+  .container{
+    max-width:1000px;margin:16px auto;padding:20px;border-radius:16px;
+    background:linear-gradient(135deg,var(--brand-green-1),var(--brand-green-2));
+    box-shadow:0 14px 30px rgba(0,0,0,.08),0 4px 8px rgba(0,0,0,.06);
+  }
+  label{display:block;margin-top:12px;font-weight:bold}
+  input,select{
+    width:100%;box-sizing:border-box;margin-top:6px;padding:10px 12px;border:1px solid #cfd8dc;border-radius:10px;background:#fff;
+    outline:none;transition:border .15s ease, box-shadow .15s ease;
+  }
+  input:focus,select:focus{border-color:#a7c7b7;box-shadow:0 0 0 3px rgba(40,167,69,.15)}
+  .btn{
+    display:inline-block;border:0;padding:12px 18px;margin:14px 6px 0 0;cursor:pointer;color:#fff;background:var(--blue);
+    border-radius:30px;box-shadow:4px 4px 10px rgba(0,0,0,.15), -3px -3px 8px rgba(255,255,255,.8);
+    transition:all .18s ease; user-select:none;
+  }
+  .btn:hover{background:var(--blue-hover)}
+  .btn:active{transform:translateY(2px);box-shadow:inset 3px 3px 6px rgba(0,0,0,.18), inset -3px -3px 6px rgba(255,255,255,.85)}
+  .preview-box{
+    margin-top:12px;padding:14px;border-radius:16px;background:var(--soft);
+    box-shadow:inset 5px 5px 10px rgba(0,0,0,.08), inset -5px -5px 12px rgba(255,255,255,.9);
+  }
+  table{width:100%;border-collapse:collapse;margin-top:18px;background:#fff;border-radius:8px;overflow:hidden}
+  th,td{border:1px solid #e0e0e0;padding:10px;text-align:center;font-size:14px}
+  th{background:#f3faf5;color:#11412a}
+  .totals{margin-top:16px;padding:12px;background:#eef;border-radius:8px}
+  .mode-header{margin:10px 0 0 0;font-weight:bold;color:#11412a}
+
+  /* Affiliates */
+  h2{max-width:1000px;margin:28px auto 6px;padding:0 16px}
+  .affiliate-grid{max-width:1000px;margin:0 auto;display:grid;gap:12px;padding:0 16px 12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .affiliate-grid a{display:block;background:#fff;border-radius:10px;padding:8px;border:2px solid var(--brand-green-3);transition:transform .1s ease, box-shadow .15s ease}
+  .affiliate-grid a:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.12)}
+  .affiliate-grid img{width:100%;height:auto;display:block;border-radius:6px}
+
+  /* See More smooth slide */
+  .see-more-wrap{max-width:1000px;margin:0 auto;padding:0 16px 24px}
+  .see-more-btn{
+    display:inline-block;padding:10px 16px;border-radius:30px;background:var(--blue);color:#fff;cursor:pointer;transition:background .18s ease;user-select:none
+  }
+  .see-more-btn.active{background:var(--blue-active)}
+  .reveal{
+    overflow:hidden;max-height:0;transition:max-height .45s ease; /* smooth slide */
+  }
+  .reveal.open{ /* max-height set inline via JS to content scrollHeight for smoothness */ }
+
+  /* Footer / Install */
+  .center{max-width:1000px;margin:0 auto;text-align:center;padding:0 16px 28px}
+  .install-note{font-size:13px;color:var(--muted);margin-top:6px}
+
+  /* Small note ribbon for SEO copy separation */
+  .note{max-width:1000px;margin:20px auto 0;padding:10px 16px;color:#356c4f;font-size:14px}
+</style>
+
+<!-- JSON-LD: describe this as a calculator web app -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"HYIP ROI Calculator","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Free HYIP ROI Calculator for high yield investment programs. Calculate daily, weekly, monthly returns for small capital plans with profit-only or principal-included payouts.","url":"https://example.com","provider":{"@type":"Organization","name":"Your Brand"}}
+</script>
+</head>
+<body>
+
+<h1 style="text-align:center;margin:18px 0 6px;">High Yield Investment & HYIP ROI Calculator for Small Capital Plans</h1>
+<p class="lead">
+  This free HYIP ROI calculator is designed for experienced participants exploring high yield investment programs and small-capital plans. Model <strong>daily</strong>, <strong>weekly</strong>, and <strong>monthly</strong> payouts as <strong>fixed dollar amounts</strong> or <strong>percentages</strong>, with your choice of <strong>profit-only</strong> or <strong>principal-included</strong> payout structures. Review ROI, breakeven timing, and cumulative returns over any term length.
+</p>
+
+<div class="container">
+  <!-- Mode & Payout Type -->
+  <label>Calculation Mode:
+    <select id="calcMode" onchange="switchMode()">
+      <option value="dollar">Fixed Dollar Payouts ($)</option>
+      <option value="percent">Percentage Payouts (%)</option>
+    </select>
+  </label>
+  <label>Payout Type:
+    <select id="payoutType" onchange="updateModeHeader()">
+      <option value="profitOnly">Payouts Are Profit Only (Principal returned at end)</option>
+      <option value="includesPrincipal">Payouts Include Principal (Principal returned within payouts)</option>
+    </select>
+  </label>
+
+  <!-- Dollar Inputs -->
+  <div id="dollarInputs">
+    <label>Daily Payout ($) <input type="number" id="dailyPayoutDollar" step="0.01" min="0" /></label>
+    <label>Weekly Payout ($) <input type="number" id="weeklyPayoutDollar" step="0.01" min="0" /></label>
+    <label>Monthly Payout ($) <input type="number" id="monthlyPayoutDollar" step="0.01" min="0" /></label>
+  </div>
+
+  <!-- Percent Inputs -->
+  <div id="percentInputs" style="display:none;">
+    <label>Daily Payout (% of principal) <input type="number" id="dailyPayoutPercent" step="0.01" min="0" /></label>
+    <label>Weekly Payout (% of principal) <input type="number" id="weeklyPayoutPercent" step="0.01" min="0" /></label>
+    <label>Monthly Payout (% of principal) <input type="number" id="monthlyPayoutPercent" step="0.01" min="0" /></label>
+  </div>
+
+  <!-- Principal & Term -->
+  <label>Initial Investment Amount ($) <input type="number" id="initialInvestment" step="0.01" min="0" /></label>
+  <label>Term Length
+    <input type="number" id="termLength" min="1" step="1" style="width:60%;display:inline-block;" />
+    <select id="termUnit" style="width:38%;display:inline-block;margin-left:2%;">
+      <option value="months" selected>Months</option>
+      <option value="weeks">Weeks</option>
+      <option value="days">Days</option>
+    </select>
+  </label>
+
+  <!-- Actions -->
+  <button class="btn" onclick="calculatePreview()">Calculate</button>
+  <button class="btn" onclick="saveInvestment()" id="saveButton">Add Investment</button>
+
+  <!-- Session pairing -->
+  <div id="modeHeader" class="mode-header"></div>
+
+  <!-- Preview -->
+  <div id="calcPreview" class="preview-box" style="display:none;"></div>
+
+  <!-- Table -->
+  <table id="investmentTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Initial Investment</th>
+        <th>Daily</th>
+        <th>Weekly</th>
+        <th>Monthly</th>
+        <th>Term</th>
+        <th>Final Amount</th>
+        <th>Profit</th>
+        <th>ROI (%)</th>
+        <th>Breakeven Info</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Totals -->
+  <div class="totals">
+    <strong>Total Initial Investment:</strong> $<span id="totalInvested">0.00</span><br />
+    <strong>Total Final Amount:</strong> $<span id="totalPayout">0.00</span><br />
+    <strong>Total Profit:</strong> $<span id="totalProfit">0.00</span>
+  </div>
+</div>
+
+<!-- AFFILIATE SECTION -->
+<h2>Recommended High Yield Investment Programs & HYIP Offers</h2>
+
+<!-- Visible 8 slots -->
+<div class="affiliate-grid">
+  <!-- SLOT 1 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMWZmZWYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjMGY4ZWMiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzE0NTkzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPk1vcmUgdG8gQ29tZTwvdGV4dD48L3N2Zz4=" />
+  </a>
+  <!-- SLOT 2 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMWZmZmEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4OGQ1ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYikiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+  <!-- SLOT 3 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMGY5ZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM2MGJhZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYykiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+  <!-- SLOT 4 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMGZkZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4NmZkZWEiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZCkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+  <!-- SLOT 5 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImUiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNkZWY5ZWEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhMGU0ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+  <!-- SLOT 6 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMWZmZWYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjMGY4ZWMiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzE0NTkzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPk1vcmUgdG8gQ29tZTwvdGV4dD48L3N2Zz4=" />
+  </a>
+  <!-- SLOT 7 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMWZmZmEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4OGQ1ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYikiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+  <!-- SLOT 8 -->
+  <a href="#" target="_blank" rel="nofollow sponsored">
+    <img alt="More to Come"
+      src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMGY5ZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM2MGJhZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYykiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" />
+  </a>
+</div>
+
+<!-- Hidden 12 slots with smooth slide -->
+<div class="see-more-wrap">
+  <div id="moreOffers" class="reveal">
+    <div class="affiliate-grid">
+      <!-- SLOT 9 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMGZkZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4NmZkZWEiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZCkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 10 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImUiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNkZWY5ZWEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhMGU0ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 11 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMWZmZWYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjMGY4ZWMiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzE0NTkzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPk1vcmUgdG8gQ29tZTwvdGV4dD48L3N2Zz4=" /></a>
+      <!-- SLOT 12 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMWZmZmEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4OGQ1ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYikiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 13 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMGY5ZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM2MGJhZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYykiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 14 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMGZkZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4NmZkZWEiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZCkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 15 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImUiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNkZWY5ZWEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhMGU0ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 16 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMWZmZWYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjMGY4ZWMiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzE0NTkzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWYiPk1vcmUgdG8gQ29tZTwvdGV4dD48L3N2Zz4=" /></a>
+      <!-- SLOT 17 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMWZmZmEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4OGQ1ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYikiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 18 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImMiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlMGY5ZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM2MGJhZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjYykiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 19 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImQiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIwIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmMGZkZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4NmZkZWEiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZCkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+      <!-- SLOT 20 -->
+      <a href="#" target="_blank" rel="nofollow sponsored"><img alt="More to Come" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZWFyR3JhZGllbnQgaWQ9ImUiIHgxPSIxIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNkZWY5ZWEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNhMGU0ZmYiLz48L2xpbmVhckdyYWRpZW50PjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiByeD0iMTIiIGZpbGw9InVybCgjZSkiLz48dGV4dCB4PSIxNTAiIHk9IjEyOCIgc3R5bGU9ImZvbnQtc2l6ZToyNHB4O2ZpbGw6IzE0NTkzODtmb250LXdlaWdodDo2MDA7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Nb3JlIHRvIENvbWU8L3RleHQ+PC9zdmc+" /></a>
+    </div>
+  </div>
+  <div class="center" style="padding-top:8px">
+    <span id="seeMoreBtn" class="see-more-btn" onclick="toggleMore()">⬇ See More Offers</span>
+  </div>
+</div>
+
+<!-- Install PWA -->
+<div class="center">
+  <button class="btn" onclick="installPWA()">📲 Install HYIP ROI Calculator App</button>
+  <div class="install-note">Works offline after first load. Adds to your Android home screen like an app.</div>
+</div>
+
+<!-- SEO helper note -->
+<p class="note">Use this HYIP ROI calculator to evaluate high yield investment plans with small capital. Model daily, weekly, and monthly payouts; compare profit-only versus principal-included schedules; and estimate breakeven days.</p>
+
+<script>
+/* ---------- CALCULATOR LOGIC (supports 4 combinations) ---------- */
+let investments=[],editIndex=-1;
+
+function switchMode(){
+  const mode=document.getElementById('calcMode').value;
+  if(mode==='dollar'){
+    document.getElementById('dollarInputs').style.display='block';
+    document.getElementById('percentInputs').style.display='none';
+    clearPercentInputs();
+  }else{
+    document.getElementById('dollarInputs').style.display='none';
+    document.getElementById('percentInputs').style.display='block';
+    clearDollarInputs();
+  }
+  updateModeHeader();
+}
+
+function updateModeHeader(){
+  const modeText=document.getElementById('calcMode').value==='dollar'?'Fixed Dollar Payouts ($)':'Percentage Payouts (%)';
+  const payoutText=document.getElementById('payoutType').value==='includesPrincipal'?'Payouts Include Principal':'Payouts Are Profit Only';
+  document.getElementById('modeHeader').innerText=`Calculation Mode: ${modeText} — ${payoutText}`;
+}
+
+function clearDollarInputs(){
+  document.getElementById('dailyPayoutDollar').value='';
+  document.getElementById('weeklyPayoutDollar').value='';
+  document.getElementById('monthlyPayoutDollar').value='';
+}
+function clearPercentInputs(){
+  document.getElementById('dailyPayoutPercent').value='';
+  document.getElementById('weeklyPayoutPercent').value='';
+  document.getElementById('monthlyPayoutPercent').value='';
+}
+
+function daysFromTerm(len,unit){
+  if(unit==='months') return len*30.4167;
+  if(unit==='weeks') return len*7;
+  return len;
+}
+
+function calculateCore(principal,termLength,termUnit,mode,payoutType,daily,weekly,monthly){
+  const termDays=daysFromTerm(termLength,termUnit);
+
+  // Compute daily-equivalent payout
+  let dailyEquiv=0;
+  if(mode==='dollar'){
+    dailyEquiv = (daily||0) + (weekly||0)/7 + (monthly||0)/30.4167;
+  }else{ // percent of principal
+    const dAmt=principal*((daily||0)/100);
+    const wAmt=principal*((weekly||0)/100);
+    const mAmt=principal*((monthly||0)/100);
+    dailyEquiv = dAmt + wAmt/7 + mAmt/30.4167;
+  }
+
+  let profit,finalAmount,totalPaid;
+  if(payoutType==='profitOnly'){
+    profit = dailyEquiv*termDays;
+    finalAmount = principal + profit;
+    totalPaid = profit; // payouts are only profit here
+  }else{
+    totalPaid = dailyEquiv*termDays; // payouts include principal
+    profit = totalPaid - principal;
+    finalAmount = totalPaid;
+  }
+
+  const roiPercent = (profit/principal)*100;
+
+  // Breakeven (days to recover principal via payouts)
+  let breakevenInfo='∞ (no payout)';
+  if(dailyEquiv>0){
+    const breakevenDays = Math.ceil(principal/dailyEquiv);
+    if(breakevenDays<=Math.ceil(termDays)){
+      breakevenInfo = `${breakevenDays} days from start`;
+    }else{
+      const extraDays=breakevenDays-Math.ceil(termDays);
+      breakevenInfo = `${breakevenDays} days total (${formatExtra(extraDays)} past term)`;
+    }
+  }
+  return {termDays,profit,finalAmount,roiPercent,breakevenInfo};
+}
+
+function formatExtra(days){
+  days=Math.ceil(days);
+  if(days<14) return `${days} days`;
+  if(days<60) return `${Math.ceil(days/7)} weeks`;
+  return `${Math.ceil(days/30.4167)} months`;
+}
+
+function getInputsByMode(){
+  const mode=document.getElementById('calcMode').value;
+  if(mode==='dollar'){
+    return {
+      daily: parseFloat(document.getElementById('dailyPayoutDollar').value)||0,
+      weekly: parseFloat(document.getElementById('weeklyPayoutDollar').value)||0,
+      monthly: parseFloat(document.getElementById('monthlyPayoutDollar').value)||0
+    };
+  }else{
+    return {
+      daily: parseFloat(document.getElementById('dailyPayoutPercent').value)||0,
+      weekly: parseFloat(document.getElementById('weeklyPayoutPercent').value)||0,
+      monthly: parseFloat(document.getElementById('monthlyPayoutPercent').value)||0
+    };
+  }
+}
+
+function calculatePreview(){
+  const principal=parseFloat(document.getElementById('initialInvestment').value);
+  const termLength=parseInt(document.getElementById('termLength').value,10);
+  const termUnit=document.getElementById('termUnit').value;
+  const mode=document.getElementById('calcMode').value;
+  const payoutType=document.getElementById('payoutType').value;
+
+  if(isNaN(principal)||principal<=0||isNaN(termLength)||termLength<=0){
+    alert("Please enter valid positive initial investment and term.");
+    return;
+  }
+  const {daily,weekly,monthly}=getInputsByMode();
+  const {profit,finalAmount,roiPercent,breakevenInfo}=calculateCore(principal,termLength,termUnit,mode,payoutType,daily,weekly,monthly);
+
+  updateModeHeader();
+  const pv=document.getElementById('calcPreview');
+  pv.style.display='block';
+  pv.innerHTML=`
+    <strong>Calculation Preview</strong><br>
+    Mode: ${mode==='dollar'?'Dollar Payouts ($)':'Percentage Payouts (%)'}<br>
+    Payout Type: ${payoutType==='includesPrincipal'?'Includes Principal':'Profit Only'}<br>
+    Profit: $${profit.toFixed(2)}<br>
+    Final Amount: $${finalAmount.toFixed(2)}<br>
+    ROI: ${roiPercent.toFixed(2)}%<br>
+    Breakeven: ${breakevenInfo}
+  `;
+}
+
+function saveInvestment(){
+  const principal=parseFloat(document.getElementById('initialInvestment').value);
+  const termLength=parseInt(document.getElementById('termLength').value,10);
+  const termUnit=document.getElementById('termUnit').value;
+  const mode=document.getElementById('calcMode').value;
+  const payoutType=document.getElementById('payoutType').value;
+
+  if(isNaN(principal)||principal<=0||isNaN(termLength)||termLength<=0){
+    alert("Please enter valid positive initial investment and term.");
+    return;
+  }
+  const {daily,weekly,monthly}=getInputsByMode();
+  const {termDays,profit,finalAmount,roiPercent,breakevenInfo}=calculateCore(principal,termLength,termUnit,mode,payoutType,daily,weekly,monthly);
+
+  const investmentData={initialInvestment:principal,daily,weekly,monthly,termLength,termUnit,termDays,totalPayout:finalAmount,profit,roiPercent,breakevenInfo};
+
+  if(editIndex>=0){
+    investments[editIndex]=investmentData; editIndex=-1;
+    document.getElementById('saveButton').textContent='Add Investment';
+  }else{
+    investments.push(investmentData);
+  }
+  document.getElementById('calcPreview').style.display='none';
+  updateTable(); clearInputs();
+}
+
+function updateTable(){
+  const tbody=document.querySelector('#investmentTable tbody');
+  tbody.innerHTML='';
+  let totalInvested=0,totalPayoutSum=0,totalProfitSum=0;
+  investments.forEach((inv,idx)=>{
+    totalInvested+=inv.initialInvestment;
+    totalPayoutSum+=inv.totalPayout;
+    totalProfitSum+=inv.profit;
+    const termDisplay=`${inv.termLength} ${inv.termUnit}`;
+    tbody.innerHTML+=`
+      <tr>
+        <td>${idx+1}</td>
+        <td>$${inv.initialInvestment.toFixed(2)}</td>
+        <td>${inv.daily}</td>
+        <td>${inv.weekly}</td>
+        <td>${inv.monthly}</td>
+        <td>${termDisplay}</td>
+        <td>$${inv.totalPayout.toFixed(2)}</td>
+        <td>$${inv.profit.toFixed(2)}</td>
+        <td>${inv.roiPercent.toFixed(2)}%</td>
+        <td>${inv.breakevenInfo}</td>
+        <td>
+          <button class="btn" onclick="editInvestment(${idx})">Edit</button>
+          <button class="btn" onclick="deleteInvestment(${idx})">Delete</button>
+        </td>
+      </tr>`;
+  });
+  document.getElementById('totalInvested').innerText=totalInvested.toFixed(2);
+  document.getElementById('totalPayout').innerText=totalPayoutSum.toFixed(2);
+  document.getElementById('totalProfit').innerText=totalProfitSum.toFixed(2);
+}
+
+function editInvestment(i){
+  const inv=investments[i];
+  document.getElementById('initialInvestment').value=inv.initialInvestment;
+  document.getElementById('termLength').value=inv.termLength;
+  document.getElementById('termUnit').value=inv.termUnit;
+  const mode=document.getElementById('calcMode').value;
+  if(mode==='dollar'){
+    document.getElementById('dailyPayoutDollar').value=inv.daily;
+    document.getElementById('weeklyPayoutDollar').value=inv.weekly;
+    document.getElementById('monthlyPayoutDollar').value=inv.monthly;
+  }else{
+    document.getElementById('dailyPayoutPercent').value=inv.daily;
+    document.getElementById('weeklyPayoutPercent').value=inv.weekly;
+    document.getElementById('monthlyPayoutPercent').value=inv.monthly;
+  }
+  editIndex=i; document.getElementById('saveButton').textContent='Update Investment';
+}
+
+function deleteInvestment(i){investments.splice(i,1);updateTable();}
+
+function clearInputs(){
+  document.getElementById('initialInvestment').value='';
+  document.getElementById('termLength').value=''; document.getElementById('termUnit').value='months';
+  clearDollarInputs(); clearPercentInputs();
+}
+
+updateModeHeader();
+
+/* ---------- SEE MORE (smooth slide + button color change) ---------- */
+function toggleMore(){
+  const box=document.getElementById('moreOffers');
+  const btn=document.getElementById('seeMoreBtn');
+  if(!box.classList.contains('open')){
+    // open
+    box.style.maxHeight='0px';
+    box.classList.add('open');
+    // measure then expand
+    requestAnimationFrame(()=>{
+      const h=box.scrollHeight;
+      box.style.maxHeight=h+'px';
+    });
+    btn.classList.add('active'); btn.textContent='⬆ See Less Offers';
+  }else{
+    // collapse
+    const h=box.scrollHeight;
+    box.style.maxHeight=h+'px';
+    requestAnimationFrame(()=>{ box.style.maxHeight='0px'; });
+    btn.classList.remove('active'); btn.textContent='⬇ See More Offers';
+    // after transition, remove open
+    box.addEventListener('transitionend',function handler(){
+      box.classList.remove('open'); box.removeEventListener('transitionend',handler);
+    });
+  }
+}
+
+/* ---------- PWA: inline manifest + inline service worker (via Blob) ---------- */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; });
+
+function installPWA(){
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;}); }
+  else alert('If your browser supports install, an install prompt will appear automatically.');
+}
+
+// Create an inline manifest via data URL (replace icons later with PNGs on your domain for best results)
+(function(){
+  const manifest = {
+    "name":"HYIP ROI Calculator",
+    "short_name":"HYIP ROI",
+    "start_url":"./",
+    "display":"standalone",
+    "background_color":"#e6f7ec",
+    "theme_color":"#28a745",
+    "description":"Free HYIP ROI Calculator for small-cap high yield plans.",
+    "icons":[
+      { "src":"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJhZGlhbEdyYWRpZW50IGlkPSJnIiBjeD0iNTEiIGN5PSI1MSIgcj0iNTEiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNlNmY3ZWMiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNkMGYwZGEiLz48L3JhZGlhbEdyYWRpZW50PjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iOTYiIGZpbGw9InVybCgjZykiLzxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1NiwyNTYpIj48Y2lyY2xlIGN4PSIwIiBjeT0iMCIgcj0iMTgwIiBmaWxsPSIjMjhhNzQ1Ii8+PHRleHQgeD0iMCIgeT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTk2IiBmb250LXdlaWdodD0iNzAwIiBmb250LWZhbWlseT0iQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWYiIGZpbGw9IiNmZmYiPiQ8L3RleHQ+PC9nPjwvc3ZnPg==","sizes":"512x512","type":"image/svg+xml","purpose":"any"}
+    ]
+  };
+  const blob=new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);
+})();
+
+// Inline Service Worker via Blob
+(function(){
+  const swCode = `
+    const CACHE='hyip-roi-cache-v1';
+    self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./']))); self.skipWaiting(); });
+    self.addEventListener('activate',e=>{ e.waitUntil(self.clients.claim()); });
+    self.addEventListener('fetch',e=>{
+      const req=e.request;
+      e.respondWith(
+        caches.match(req).then(res=> res || fetch(req).then(net=>{
+          // cache GET requests
+          if(req.method==='GET'){
+            const copy=net.clone(); caches.open(CACHE).then(c=>c.put(req,copy));
+          }
+          return net;
+        }).catch(()=>caches.match('./')))
+      );
+    });
+  `;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  const swURL=URL.createObjectURL(blob);
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register(swURL).catch(()=>{});
+  }
+})();
+</script>
+
+<!-- -------------------- OPTIONAL: Minify-on-load toggle (leave commented) --------------------
+<script>
+  (function(){document.documentElement.innerHTML=document.documentElement.innerHTML.replace(/\s{2,}/g,' ');})();
+</script>
+-------------------------------------------------------------------------------------------- -->
+
+</body>
+</html>
