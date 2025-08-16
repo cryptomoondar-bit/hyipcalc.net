@@ -1,31 +1,61 @@
-# High Yield Investment Program (HYIP) ROI Calculator
+# HYIP ROI Calculator – High Yield Investment Program Returns Calculator
 
-A free **High Yield Investment Program (HYIP) ROI Calculator** designed for small capital investors, offering **Dollar Mode** and **Percentage Mode** payout options. Analyze both **profit-only** and **principal-inclusive** payment structures. Fully responsive design, SEO-optimized, and includes **Progressive Web App (PWA)** offline support.
-
-## Features
-- **Dollar Mode**: Enter fixed payouts in USD.
-- **Percentage Mode**: Enter payouts as % of invested amount.
-- **Profit-Only or Principal-Inclusive**: Choose how payouts are calculated.
-- **Real-Time Preview**: Verify calculation before adding to the table.
-- **Mobile-Ready & PWA**: Works offline and can be installed as an app.
-- **Affiliate-Friendly**: Includes 20 affiliate banner slots with "See More" toggle.
-
-## How to Use
-1. Select your preferred mode (**Dollar** or **Percentage**).
-2. Choose payout type (**Profit Only** or **Includes Principal**).
-3. Enter daily, weekly, and/or monthly payouts.
-4. Set investment amount and term length.
-5. Review the preview box and add to the table.
-
-## Ideal For
-- HYIP investors
-- High yield plan evaluators
-- ROI tracking for investment offers
-- Testing HYIP payout schedules
-
-## Live Demo
-[Visit the live calculator](https://cryptomoondar-bit.github.io/hyipcalc.net/)
+Welcome to the **HYIP ROI Calculator**, a free online tool designed for evaluating **High Yield Investment Programs (HYIPs)** and other high-return opportunities. This calculator is optimized for **small capital investors** who want to analyze payout schedules, compare HYIP offers, and understand how principal and profit are distributed in different plans.  
 
 ---
 
-**Disclaimer**: This tool is for educational and informational purposes only. Always research and understand the risks of HYIPs before investing.
+## 🚀 What This Calculator Does
+The **HYIP ROI Calculator** helps you test payout models under **four distinct modes**:
+
+- **Dollar Mode** – Enter fixed payouts in USD  
+- **Percentage Mode** – Enter payouts as % of invested capital  
+- **Profit-Only** – Calculates ROI with payouts excluding principal  
+- **Principal-Inclusive** – Calculates ROI when the principal is encapsulated in the payout  
+
+You can instantly preview the outcome before saving it, making it easy to evaluate multiple HYIP offers side by side.  
+
+---
+
+## 🔑 Key Features
+- **Dollar Mode or Percentage Mode** – flexible input options  
+- **Daily / Weekly / Monthly payout entry** – supports common HYIP structures  
+- **Profit-only vs. Principal-inclusive** – accurately models both payout approaches  
+- **Neumorphic Calculator Design** – modern blue-themed UI with soft buttons and preview box  
+- **Affiliate Banner Slots (20)** – “More to Come” placeholders included, expandable with smooth animation  
+- **Progressive Web App (PWA)** – installable on Android or desktop, offline-capable  
+- **SEO-optimized** – built to rank for HYIP ROI, HYIP calculator, high yield investment tools  
+
+---
+
+## 🧮 How to Use
+1. Select a **Mode**: Dollar or Percentage  
+2. Choose **Payout Type**: Profit Only or Includes Principal  
+3. Enter **Daily / Weekly / Monthly** payouts  
+4. Input **Initial Investment** and **Term Length**  
+5. View results instantly in the **preview box**  
+6. Add to the session table to compare multiple scenarios  
+
+---
+
+## 🎯 Why Use This Tool?
+If you are exploring **HYIPs**, **ROI plans**, or **high yield crypto investments**, this calculator provides clarity.  
+- Compare different HYIP offers  
+- Test sustainability of payout schedules  
+- Understand breakeven points  
+- Evaluate risks of small capital investment  
+
+---
+
+## 🌐 Live Demo
+👉 [Visit the HYIP ROI Calculator](https://cryptomoondar-bit.github.io/hyipcalc.net/)  
+
+---
+
+## 📢 Disclaimer
+This HYIP ROI Calculator is an **educational tool**. HYIPs are highly speculative and risky. This project does **not endorse any investment offers**. Use at your own risk and always do thorough research before investing.
+
+---
+
+## 🔍 SEO Keywords
+**HYIP ROI Calculator, HYIP calculator, high yield investment ROI, high yield profit calculator, HYIP returns analysis, small capital HYIP, ROI tracker tool**
+
